@@ -15,7 +15,7 @@ import {
     REMOVE_ALERT
 } from '../types';
 
-const ContactState = (props) => {
+const ContactState = props => {
     const initialState = {
         contacts: [
             {
@@ -39,18 +39,45 @@ const ContactState = (props) => {
                 phone: '333-333-3333',
                 type: 'professional'
             }
-        ]
+        ],
+        current: null
     };
 
     const [state, dispatch] = useReducer(contactReducer, initialState);
 
-    const addContact = (contact) => {
+    const addContact = contact => {
         contact.id = uuid();
         dispatch({type: ADD_CONTACT, payload: contact});
     };
 
+    const deleteContact = id => {
+        dispatch({type: DELETE_CONTACT, payload: id});
+    };
+
+    const updateContact = contact => {
+        dispatch({type: UPDATE_CONTACT, payload: contact});
+    };
+
+    const clearCurrent = () => {
+        dispatch({type: CLEAR_CURRENT});
+    };
+
+    const setCurrent = contact => {
+        dispatch({type: SET_CURRENT, payload: contact});
+    };
+
     return (
-        <ContactContext.Provider value={{contacts: state.contacts, addContact}}>
+        <ContactContext.Provider
+            value={{
+                contacts: state.contacts,
+                current: state.current,
+                addContact,
+                deleteContact,
+                updateContact,
+                clearCurrent,
+                setCurrent
+            }}
+        >
             {props.children}
         </ContactContext.Provider>
     );
