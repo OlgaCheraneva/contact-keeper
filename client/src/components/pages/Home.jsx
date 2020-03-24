@@ -8,7 +8,7 @@ import ContactContext from '../../context/contact/contactContext';
 
 export const Home = () => {
     const {loadUser} = useContext(AuthContext);
-    const {contacts} = useContext(ContactContext);
+    const {contacts, loading} = useContext(ContactContext);
 
     // Looks at the token, hits the backend, validates it, puts the user into state
     useEffect(() => {
@@ -22,8 +22,7 @@ export const Home = () => {
                 <ContactForm />
             </div>
             <div>
-                {/* {!loading && contacts !== null && contacts.length !== 0 ? ( */}
-                {contacts !== null && contacts.length !== 0 ? (
+                {!loading && contacts !== null && contacts.length !== 0 ? (
                     <ContactFilter />
                 ) : (
                     ''
