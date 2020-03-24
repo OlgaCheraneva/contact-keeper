@@ -69,8 +69,9 @@ const AuthState = (props) => {
         auth(formData, '/api/auth', LOGIN_SUCCESS, LOGIN_FAIL);
     };
 
-    const logout = () => {};
-    const clearErrors = () => {};
+    const logout = () => dispatch({type: LOGOUT});
+
+    const clearErrors = () => dispatch({type: CLEAR_ERRORS});
 
     return (
         <AuthContext.Provider
