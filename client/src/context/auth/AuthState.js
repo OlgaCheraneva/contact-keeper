@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import AuthContext from './authContext';
 import authReducer from './authReducer';
+import setAuthToken from '../../utils/setAuthToken';
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -14,7 +15,7 @@ import {
     CLEAR_ERRORS
 } from '../types';
 
-const AuthState = props => {
+const AuthState = (props) => {
     const initialState = {
         token: localStorage.getItem('token'),
         isAuthenticated: null,
@@ -25,7 +26,20 @@ const AuthState = props => {
 
     const [state, dispatch] = useReducer(authReducer, initialState);
 
-    const register = async formData => {
+    const loadUser = async () => {
+        if (localStorage.token) {
+            setAuthToken(localStorage.token);
+        }
+
+        try {
+            const res = await axios.get('/api/auth');
+            dispatch({type: USER_LOADED, payload: res.data});
+        } catch (err) {
+            dispatch({type: AUTH_ERROR});
+        }
+    };
+
+    const auth = async (data, url, successActionType, failActionType) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -33,21 +47,28 @@ const AuthState = props => {
         };
 
         try {
-            const result = await axios.post('/api/users', formData, config);
+            const result = await axios.post(url, data, config);
             dispatch({
-                type: REGISTER_SUCCESS,
+                type: successActionType,
                 payload: result.data // token
             });
+            loadUser();
         } catch (error) {
             dispatch({
-                type: REGISTER_FAIL,
+                type: failActionType,
                 payload: error.response.data.msg
             });
         }
     };
 
-    const loadUser = () => {};
-    const login = () => {};
+    const register = (formData) => {
+        auth(formData, '/api/users', REGISTER_SUCCESS, REGISTER_FAIL);
+    };
+
+    const login = (formData) => {
+        auth(formData, '/api/auth', LOGIN_SUCCESS, LOGIN_FAIL);
+    };
+
     const logout = () => {};
     const clearErrors = () => {};
 
