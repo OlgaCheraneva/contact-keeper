@@ -22,7 +22,12 @@ export const Home = () => {
                 <ContactForm />
             </div>
             <div>
-                {contacts.length ? <ContactFilter /> : ''}
+                {/* {!loading && contacts !== null && contacts.length !== 0 ? ( */}
+                {contacts !== null && contacts.length !== 0 ? (
+                    <ContactFilter />
+                ) : (
+                    ''
+                )}
                 <Contacts />
             </div>
         </div>
