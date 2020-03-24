@@ -4,9 +4,11 @@ import {Contacts} from '../contacts/Contacts';
 import {ContactForm} from '../contacts/ContactForm';
 import {ContactFilter} from '../contacts/ContactFilter';
 import AuthContext from '../../context/auth/authContext';
+import ContactContext from '../../context/contact/contactContext';
 
 export const Home = () => {
     const {loadUser} = useContext(AuthContext);
+    const {contacts} = useContext(ContactContext);
 
     // Looks at the token, hits the backend, validates it, puts the user into state
     useEffect(() => {
@@ -20,7 +22,7 @@ export const Home = () => {
                 <ContactForm />
             </div>
             <div>
-                <ContactFilter />
+                {contacts.length ? <ContactFilter /> : ''}
                 <Contacts />
             </div>
         </div>

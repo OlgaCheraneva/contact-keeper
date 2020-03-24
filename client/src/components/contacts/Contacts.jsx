@@ -17,17 +17,17 @@ export const Contacts = () => {
         <Fragment>
             <TransitionGroup>
                 {filtered === null
-                    ? contacts.map(contact => (
+                    ? contacts.map((contact) => (
                           <CSSTransition
-                              key={contact.id}
+                              key={contact._id}
                               timeout={500}
                               classNames="item"
                           >
                               <ContactItem contact={contact} />
                           </CSSTransition>
                       ))
-                    : filtered.map(contact => (
-                          <ContactItem key={contact.id} contact={contact} />
+                    : filtered.map((contact) => (
+                          <ContactItem key={contact._id} contact={contact} />
                       ))}
             </TransitionGroup>
         </Fragment>
